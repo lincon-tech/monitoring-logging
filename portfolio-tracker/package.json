@@ -1,0 +1,15 @@
+{
+    "name": "portfolio-tracker",
+    "version": "1.0.0",
+    "description": "Node.js API with Prometheus metrics and JSON logging",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "express": "^4.19.2",
+        "prom-client": "^15.1.3",
+        "morgan": "^1.10.0",
+        "uuid": "^11.0.3"
+    }
+}

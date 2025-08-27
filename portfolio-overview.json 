@@ -1,0 +1,78 @@
+{
+  "title": "Portfolio Tracker Full Overview",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Requests / s",
+      "gridPos": { "x": 0, "y": 0, "w": 8, "h": 4 },
+      "targets": [
+        {
+          "expr": "sum(rate(http_request_duration_seconds_count[1m]))"
+        }
+      ]
+    },
+    {
+      "type": "gauge",
+      "title": "p95 Latency (s)",
+      "gridPos": { "x": 8, "y": 0, "w": 8, "h": 4 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Non-2xx Rate",
+      "gridPos": { "x": 0, "y": 4, "w": 16, "h": 8 },
+      "targets": [
+        {
+          "expr": "sum(rate(http_request_duration_seconds_count{status_code!~\"2..\"}[5m]))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Pod CPU Usage (cores)",
+      "gridPos": { "x": 0, "y": 12, "w": 8, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"app\", pod=~\"portfolio-tracker.*\"}[5m])) by (pod)"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Pod Memory Usage (MiB)",
+      "gridPos": { "x": 8, "y": 12, "w": 8, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum(container_memory_usage_bytes{namespace=\"app\", pod=~\"portfolio-tracker.*\"}) by (pod) / 1024 / 1024"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Pod Restarts",
+      "gridPos": { "x": 0, "y": 18, "w": 4, "h": 4 },
+      "targets": [
+        {
+          "expr": "sum(kube_pod_container_status_restarts_total{namespace=\"app\", pod=~\"portfolio-tracker.*\"})"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Pod Availability",
+      "gridPos": { "x": 4, "y": 18, "w": 12, "h": 4 },
+      "targets": [
+        {
+          "expr": "sum(kube_pod_status_phase{namespace=\"app\", pod=~\"portfolio-tracker.*\", phase=\"Running\"})"
+        }
+      ]
+    }
+  ]
+}

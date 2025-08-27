@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio-tracker
+  namespace: app
+  labels:
+    app: portfolio-tracker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: portfolio-tracker
+  template:
+    metadata:
+      labels:
+        app: portfolio-tracker
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: app
+          image: lincontech/portfolio-tracker:1.0.0   # CHANGE TO YOUR OWN IMAGE FROM DOCKER HUB
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

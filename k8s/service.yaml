@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: portfolio-tracker
+  namespace: app
+  labels:
+    app: portfolio-tracker
+spec:
+  selector:
+    app: portfolio-tracker
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
